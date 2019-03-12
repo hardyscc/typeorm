@@ -104,7 +104,7 @@ export class PlatformTools {
                  * sybase
                  */
                 case "sybase":
-                    return require("sybase");
+                    return require("mssql");
 
                 /**
                  * other modules
