@@ -267,7 +267,7 @@ export class SybaseDriver implements Driver {
      */
     protected async closePool(pool: any): Promise<void> {
         return new Promise<void>((ok, fail) => {
-            pool.close((err: any) => (err ? fail(err) : ok()));
+            pool.purge((err: any) => (err ? fail(err) : ok()));
         });
     }
 
@@ -799,21 +799,32 @@ export class SybaseDriver implements Driver {
 
         // pooling is enabled either when its set explicitly to true,
         // either when its not defined at all (e.g. enabled by default)
-        return new Promise<void>((ok, fail) => {
-            const pool = new this.sybase.ConnectionPool(connectionOptions);
+        return new Promise<void>(async (ok, fail) => {
+            const config = {
+                url: "jdbc:sybase:Tds:cdcibm27.server.ha.org.hk:22880/phs_db",
+                drivername: "com.sybase.jdbc3.jdbc.SybDriver",
+                user: "sa",
+                password: "pms9EDS)",
+                minpoolsize: 10
+            };
 
-            const { logger } = this.connection;
+            const pool = new this.sybase.Pool(config);
+
+            // const { logger } = this.connection;
             /*
               Attaching an error handler to pool errors is essential, as, otherwise, errors raised will go unhandled and
               cause the hosting app to crash.
              */
-            pool.on("error", (error: any) =>
-                logger.log("warn", `MSSQL pool raised an error. ${error}`)
-            );
+            // pool.on("error", (error: any) =>
+            //     logger.log("warn", `MSSQL pool raised an error. ${error}`)
+            // );
 
-            const connection = pool.connect((err: any) => {
+            await pool.initialize();
+
+            pool.reserve(async (err: any, connObj: any) => {
                 if (err) return fail(err);
-                ok(connection);
+                await pool.release(connObj);
+                ok(pool);
             });
         });
     }

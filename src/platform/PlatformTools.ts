@@ -1,6 +1,7 @@
 import { highlight, Theme } from "cli-highlight";
 import * as fs from "fs";
 import * as path from "path";
+import { Pool, Request } from "../driver/sybase/SybaseDriverHelper";
 export { EventEmitter } from "events";
 export { ReadStream } from "fs";
 export { Readable, Writable } from "stream";
@@ -104,7 +105,7 @@ export class PlatformTools {
                  * sybase
                  */
                 case "sybase":
-                    return require("mssql");
+                    return { Pool, Request };
 
                 /**
                  * other modules
