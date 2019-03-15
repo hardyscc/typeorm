@@ -95,7 +95,7 @@ export class SybaseQueryRunner extends BaseQueryRunner implements QueryRunner {
             const pool = await (this.mode === "slave"
                 ? this.driver.obtainSlaveConnection()
                 : this.driver.obtainMasterConnection());
-            this.databaseConnection = pool.transaction();
+            this.databaseConnection = await pool.transaction();
 
             const transactionCallback = (err: any) => {
                 if (err) {
@@ -3211,7 +3211,8 @@ export class SybaseQueryRunner extends BaseQueryRunner implements QueryRunner {
             case "varchar":
                 return this.driver.sybase.VarChar(...parameter.params);
             case "nvarchar":
-                return this.driver.sybase.NVarChar(...parameter.params);
+                // return this.driver.sybase.NVarChar(...parameter.params);
+                return parameter;
             case "xml":
                 return this.driver.sybase.Xml;
             case "time":

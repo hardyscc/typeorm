@@ -660,7 +660,7 @@ export class SybaseDriver implements Driver {
      * Creates an escaped parameter.
      */
     createParameter(parameterName: string, index: number): string {
-        return "@" + index;
+        return "?";
     }
 
     // -------------------------------------------------------------------------
@@ -801,10 +801,10 @@ export class SybaseDriver implements Driver {
         // either when its not defined at all (e.g. enabled by default)
         return new Promise<void>(async (ok, fail) => {
             const config = {
-                url: "jdbc:sybase:Tds:cdcibm27.server.ha.org.hk:22880/phs_db",
+                url: "jdbc:sybase:Tds:localhost:5000/MYSYBASE",
                 drivername: "com.sybase.jdbc3.jdbc.SybDriver",
                 user: "sa",
-                password: "pms9EDS)",
+                password: "myPassword",
                 minpoolsize: 10
             };
 
