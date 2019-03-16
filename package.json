@@ -116,7 +116,8 @@
     "test-fast": "mocha --file ./build/compiled/test/utils/test-setup.js --bail --recursive --timeout 60000 ./build/compiled/test",
     "compile": "rimraf ./build && tsc",
     "package": "gulp package",
-    "lint": "tslint -p ."
+    "lint": "tslint -p .",
+    "cp": "cp -rf build/package/ ../type-graphql-series/node_modules/typeorm/"
   },
   "bin": {
     "typeorm": "./cli.js"

@@ -753,6 +753,7 @@ export class SybaseDriver implements Driver {
         try {
             this.sybase = PlatformTools.load("sybase");
         } catch (e) {
+            console.log(e);
             // todo: better error for browser env
             throw new DriverPackageNotInstalledError("SQL Server", "mssql");
         }
