@@ -95,7 +95,7 @@ export class SybaseQueryRunner extends BaseQueryRunner implements QueryRunner {
             const pool = await (this.mode === "slave"
                 ? this.driver.obtainSlaveConnection()
                 : this.driver.obtainMasterConnection());
-            this.databaseConnection = await pool.transaction();
+            this.databaseConnection = pool.transaction();
 
             const transactionCallback = (err: any) => {
                 if (err) {
