@@ -3211,8 +3211,7 @@ export class SybaseQueryRunner extends BaseQueryRunner implements QueryRunner {
             case "varchar":
                 return this.driver.sybase.VarChar(...parameter.params);
             case "nvarchar":
-                // return this.driver.sybase.NVarChar(...parameter.params);
-                return parameter;
+                return this.driver.sybase.NVarChar(...parameter.params);
             case "xml":
                 return this.driver.sybase.Xml;
             case "time":

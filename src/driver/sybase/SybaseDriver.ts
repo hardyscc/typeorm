@@ -789,6 +789,13 @@ export class SybaseDriver implements Driver {
                 port: credentials.port,
                 domain: credentials.domain
             },
+            {
+                url: `jdbc:sybase:Tds:${credentials.host}:${credentials.port}/${
+                    credentials.domain
+                }`,
+                drivername: "com.sybase.jdbc3.jdbc.SybDriver",
+                minpoolsize: 10
+            },
             options.extra || {}
         );
 
@@ -801,30 +808,10 @@ export class SybaseDriver implements Driver {
         // pooling is enabled either when its set explicitly to true,
         // either when its not defined at all (e.g. enabled by default)
         return new Promise<void>(async (ok, fail) => {
-            const config = {
-                url: "jdbc:sybase:Tds:localhost:5000/MYSYBASE",
-                drivername: "com.sybase.jdbc3.jdbc.SybDriver",
-                user: "sa",
-                password: "myPassword",
-                minpoolsize: 10
-            };
+            const pool = new this.sybase.Pool(connectionOptions);
 
-            const pool = new this.sybase.Pool(config);
-
-            // const { logger } = this.connection;
-            /*
-              Attaching an error handler to pool errors is essential, as, otherwise, errors raised will go unhandled and
-              cause the hosting app to crash.
-             */
-            // pool.on("error", (error: any) =>
-            //     logger.log("warn", `MSSQL pool raised an error. ${error}`)
-            // );
-
-            await pool.initialize();
-
-            pool.reserve(async (err: any, connObj: any) => {
+            pool.initialize((err: any) => {
                 if (err) return fail(err);
-                await pool.release(connObj);
                 ok(pool);
             });
         });
