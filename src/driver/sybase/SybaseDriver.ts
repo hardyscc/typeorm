@@ -789,13 +789,6 @@ export class SybaseDriver implements Driver {
                 port: credentials.port,
                 domain: credentials.domain
             },
-            {
-                url: `jdbc:sybase:Tds:${credentials.host}:${credentials.port}/${
-                    credentials.domain
-                }`,
-                drivername: "com.sybase.jdbc3.jdbc.SybDriver",
-                minpoolsize: 10
-            },
             options.extra || {}
         );
 
